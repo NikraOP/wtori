@@ -72,3 +72,45 @@
     callbar.classList.toggle('is-hidden', entries[0].isIntersecting);
   }).observe(heroActions);
 })();
+
+/* Расчёт цены: размер + бронепакет → цена из таблицы «Все размеры и цены».
+   Пустая ячейка таблицы = цены пока нет, показываем «по запросу». */
+(function () {
+  'use strict';
+
+  var calc = document.querySelector('.calc');
+  if (!calc) return;
+
+  var priceEl = calc.querySelector('[data-calc="price"]');
+  var specEl = calc.querySelector('[data-calc="spec"]');
+
+  function checked(name) {
+    return document.querySelector('input[name="' + name + '"]:checked');
+  }
+  function labelText(input) {
+    return input.nextElementSibling.firstChild.textContent.trim();
+  }
+
+  function update() {
+    var size = checked('size');
+    var pack = checked('pack');
+    var color = checked('color');
+    if (!size || !pack) return;
+
+    var cell = calc.querySelector('td[data-size="' + size.value + '"][data-pack="' + pack.value + '"]');
+    var price = cell ? cell.textContent.trim() : '';
+
+    priceEl.textContent = price || 'Цена по запросу';
+    priceEl.classList.toggle('is-request', !price);
+
+    var parts = [labelText(size), labelText(pack)];
+    if (color) parts.push(color.nextElementSibling.textContent.trim().toLowerCase());
+    specEl.textContent = parts.join(' / ');
+  }
+
+  document.addEventListener('change', function (e) {
+    var n = e.target.name;
+    if (n === 'size' || n === 'pack' || n === 'color') update();
+  });
+  update();
+})();

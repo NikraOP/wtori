@@ -1,21 +1,24 @@
-/* Переключение цвета шторы: меняет data-color на <html>, CSS показывает нужные фото */
+/* Переключение цвета шторы: меняет data-color на <html>, CSS показывает нужные фото.
+   Цвет выбирают в двух местах (у фото и в расчёте цены) — оба переключателя держим одинаковыми. */
 (function () {
   'use strict';
 
   var root = document.documentElement;
-  var inputs = document.querySelectorAll('input[name="color"]');
+  var inputs = document.querySelectorAll('input[name="color"], input[name="calc-color"]');
 
   function setColor(value) {
     root.setAttribute('data-color', value);
+    for (var j = 0; j < inputs.length; j++) inputs[j].checked = inputs[j].value === value;
   }
 
   for (var i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener('change', function (e) {
       if (e.target.checked) setColor(e.target.value);
     });
-    // браузер может восстановить выбор после «назад»
-    if (inputs[i].checked) setColor(inputs[i].value);
   }
+  // браузер может восстановить выбор после «назад»
+  var restored = document.querySelector('input[name="color"]:checked');
+  if (restored) setColor(restored.value);
 })();
 
 /* Бургер-меню (планшет и телефон): открывает навигацию на весь экран.
@@ -73,7 +76,7 @@
   }).observe(heroActions);
 })();
 
-/* Расчёт цены: размер + бронепакет → цена из таблицы «Все размеры и цены».
+/* Расчёт цены: размер + бронепакет → цена из таблицы «Все размеры и цены». Цвет на цену не влияет.
    Пустая ячейка таблицы = цены пока нет, показываем «по запросу». */
 (function () {
   'use strict';
@@ -110,7 +113,7 @@
 
   document.addEventListener('change', function (e) {
     var n = e.target.name;
-    if (n === 'size' || n === 'pack' || n === 'color') update();
+    if (n === 'size' || n === 'pack' || n === 'color' || n === 'calc-color') update();
   });
   update();
 })();

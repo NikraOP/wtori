@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CASCADION — штора с противоосколочной защитой
+   Бронештора — штора с противоосколочной защитой
    Mobile-first. Без веб-шрифтов и анимаций.
    ========================================================================== */
 
@@ -168,6 +168,16 @@ table { border-collapse: collapse; }
 .header__logo { flex: none; }
 .header__logo:hover { text-decoration: none; }
 .header__logo img { display: block; width: auto; height: 34px; }
+/* название текстом, пока нет логотипа */
+.wordmark,
+.footer a.wordmark {
+  color: var(--c-text);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+.footer a.wordmark { font-size: 24px; }
 /* Навигация. Планшет и телефон — полноэкранное меню по кнопке-бургеру
    (класс .is-open ставит main.js). ПК — строка ссылок, см. ≥ 900px. */
 .header__nav { display: none; }
@@ -258,16 +268,21 @@ table { border-collapse: collapse; }
   hyphens: none;
   overflow-wrap: break-word;
 }
+/* подзаголовок: две строки на любой ширине, размер идёт за шириной экрана */
 .hero__lead {
-  text-wrap: balance;
-  margin-top: 10px;
-  color: var(--c-muted);
-  font-size: 16px;
-  line-height: 1.4;
+  margin-top: 12px;
+  font-size: 15px;
+  font-size: clamp(14px, 4.4vw, 22px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -.01em;
+  white-space: nowrap;
 }
 
-/* что внутри: подпись слева, текст справа, строки через тонкую линию */
-/* телефон: подпись над текстом; от 480px — слева */
+.hero__intro { padding: 12px 0 14px; font-size: 16px; line-height: 1.45; text-wrap: pretty; }
+
+/* из чего сделана: подпись над текстом, строки через тонкую линию */
+.hero__about div:first-child { border-top: 1px solid var(--c-line); }
 .hero__about div {
   display: grid;
   gap: 2px;
@@ -377,8 +392,18 @@ table { border-collapse: collapse; }
   text-wrap: pretty;
 }
 .offer__sub { max-width: 34em; margin-top: var(--sp-text); color: var(--c-muted); font-size: 17px; }
+/* два небольших фото в интерьере: раскрыта / сложена */
+.offer__shots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 150px));
+  gap: 12px;
+  margin-top: var(--sp-text-l);
+}
+.shot img { width: 100%; border-radius: 6px; }
+.shot figcaption { margin-top: 6px; color: var(--c-muted); font-size: 14px; }
 .offer__link {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   gap: 10px;
   min-height: 44px;
@@ -445,6 +470,8 @@ table { border-collapse: collapse; }
   letter-spacing: .1em;
   text-transform: uppercase;
 }
+.pick__legend span { display: block; margin-top: 2px; font-weight: 400; letter-spacing: 0; text-transform: none; }
+.calc__col { display: grid; gap: var(--sp-head); align-content: start; min-width: 0; }
 .pick__group {
   clear: both;
   padding: 14px 0 2px;
@@ -629,17 +656,27 @@ table { border-collapse: collapse; }
 }
 .fit__rule { margin-top: var(--sp-text); color: var(--c-muted); font-size: 18px; text-wrap: pretty; }
 .fit__list { margin-top: var(--sp-text-l); }
+.fit__rule--sub { margin-top: var(--sp-list); font-size: 16px; }
+/* слева характеристика, справа значение */
 .fit__list div {
   display: grid;
-  grid-template-columns: 110px 1fr;
+  grid-template-columns: 1fr auto;
   gap: 16px;
   align-items: baseline;
   padding: 14px 0;
   border-top: 1px solid var(--c-rule);
 }
 .fit__list div:last-child { border-bottom: 1px solid var(--c-rule); }
-.fit__list dt { font-size: 22px; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; }
-.fit__list dd { color: var(--c-muted); font-size: 16px; text-wrap: pretty; }
+.fit__list dt { font-size: 16px; line-height: 1.4; text-wrap: pretty; }
+.fit__list dt small { display: block; color: var(--c-muted); font-size: 14px; }
+.fit__list dd {
+  min-width: 96px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
 
 .fit__scheme { max-width: 520px; }
 .s-floor { stroke: var(--c-rule); stroke-width: 2; }
@@ -743,17 +780,8 @@ table { border-collapse: collapse; }
   letter-spacing: -.02em;
 }
 .mount__lead { margin-top: var(--sp-text); font-size: 18px; line-height: 1.45; text-wrap: pretty; }
-.mount__note { margin-top: var(--sp-list); color: var(--c-muted); font-size: 16px; }
-.mount__list { margin-top: var(--sp-text-l); }
-.mount__list div {
-  display: grid;
-  gap: 2px;
-  padding: 12px 0;
-  border-top: 1px solid var(--c-gold);
-}
-.mount__list div:last-child { border-bottom: 1px solid var(--c-gold); }
-.mount__list dt { font-weight: 700; }
-.mount__list dd { color: var(--c-muted); font-size: 16px; }
+.mount__photos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mount__photos img { width: 100%; border-radius: 6px; }
 
 /* ---------- 03. Испытания ---------- */
 .trials {
@@ -879,7 +907,6 @@ table { border-collapse: collapse; }
   .mount__title,
   .fit__title { font-size: 22px; }
   .fit { gap: 56px; }
-  .mount__list div:last-child { border-bottom: 0; }
 }
 @media (max-width: 899.98px) {
   :root { --callbar-h: 80px; }
@@ -895,7 +922,6 @@ table { border-collapse: collapse; }
 /* от 480px кнопки первого экрана одинаковой ширины (на ПК — размеры из макета) */
 @media (min-width: 480px) {
   .hero__actions { grid-template-columns: 1fr 1fr; }
-  .hero__about div { grid-template-columns: 104px minmax(0, 1fr); gap: 12px; }
 }
 
 /* ==========================================================================
@@ -1043,15 +1069,14 @@ table { border-collapse: collapse; }
   }
   .hero__lead {
     margin-top: calc(14 * var(--u));
-    font-size: max(13px, calc(15 * var(--u)));
-    line-height: 1.4;
+    font-size: max(15px, calc(20 * var(--u)));
   }
-  .hero__about div {
-    grid-template-columns: calc(104 * var(--u)) 1fr;
-    gap: calc(16 * var(--u));
-    padding: calc(13 * var(--u)) 0;
+  .hero__intro {
+    padding: 0 0 calc(16 * var(--u));
+    font-size: max(13px, calc(14 * var(--u)));
+    line-height: 1.5;
   }
-  .hero__about div:first-child { border-top: 1px solid var(--c-line); }
+  .hero__about div { padding: calc(10 * var(--u)) 0; }
   .hero__about dt { font-size: max(12px, calc(12.5 * var(--u))); }
   .hero__about dd { font-size: max(13px, calc(13 * var(--u))); line-height: 1.5; }
 
@@ -1138,8 +1163,8 @@ table { border-collapse: collapse; }
   .fit { grid-template-columns: 5fr 7fr; align-items: center; }
   .fit__scheme { width: 100%; max-width: 480px; justify-self: center; }
   .fit__title { font-size: 36px; }
-  .fit__list div { grid-template-columns: 140px 1fr; }
-  .fit__list dt { font-size: 26px; }
+  .fit__list dt { font-size: 17px; }
+  .fit__list dd { min-width: 130px; font-size: 26px; }
 
   /* текстовые блоки выравниваются по правой колонке (8 из 12) */
 
@@ -1148,6 +1173,7 @@ table { border-collapse: collapse; }
   .principle p { font-size: 26px; line-height: 1.35; letter-spacing: -.015em; }
 
   .mount { grid-template-columns: 7fr 5fr; align-items: center; }
+  .mount__photos { gap: 20px; }
   .mount__title { font-size: 36px; }
   .mount__lead { font-size: 20px; }
 

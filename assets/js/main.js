@@ -76,8 +76,9 @@
   }).observe(heroActions);
 })();
 
-/* Расчёт цены: размер + бронепакет → цена из таблицы «Все размеры и цены». Цвет на цену не влияет.
-   Пустая ячейка таблицы = цены пока нет, показываем «по запросу». */
+/* Расчёт цены: «на окно / на балконную дверь» (ширина 1,60 или 1,00 м) + высота → цена из таблицы
+   «Все размеры и цены». Цвет на цену не влияет. Пустая ячейка таблицы = цены пока нет, показываем «по запросу».
+   Ячейка с data-common — самый распространённый вариант, у такой высоты в списке появляется пометка. */
 (function () {
   'use strict';
 
@@ -86,34 +87,50 @@
 
   var priceEl = calc.querySelector('[data-calc="price"]');
   var specEl = calc.querySelector('[data-calc="spec"]');
+  var metaEl = calc.querySelector('[data-calc="meta"]');
+  var heights = calc.querySelectorAll('input[name="height"]');
+  var widths = calc.querySelectorAll('.pick__w');
 
   function checked(name) {
     return document.querySelector('input[name="' + name + '"]:checked');
   }
-  function labelText(input) {
-    return input.nextElementSibling.firstChild.textContent.trim();
+  function cellFor(kind, height) {
+    return calc.querySelector('td[data-w="' + kind + '"][data-h="' + height + '"]');
   }
 
   function update() {
-    var size = checked('size');
-    var pack = checked('pack');
-    var color = checked('color');
-    if (!size || !pack) return;
+    var kind = checked('kind');
+    var height = checked('height');
+    var color = checked('calc-color');
+    if (!kind || !height) return;
 
-    var cell = calc.querySelector('td[data-size="' + size.value + '"][data-pack="' + pack.value + '"]');
+    var width = kind.value === '160' ? '1,60' : '1,00';
+    var i;
+    for (i = 0; i < widths.length; i++) widths[i].textContent = width;
+
+    // пометка «частый выбор» у высот, которые в прайсе отмечены как самые распространённые
+    for (i = 0; i < heights.length; i++) {
+      var tag = heights[i].parentNode.querySelector('.pick__tag');
+      var c = cellFor(kind.value, heights[i].value);
+      if (tag) tag.hidden = !(c && c.hasAttribute('data-common'));
+    }
+
+    var cell = cellFor(kind.value, height.value);
     var price = cell ? cell.textContent.trim() : '';
-
     priceEl.textContent = price || 'Цена по запросу';
     priceEl.classList.toggle('is-request', !price);
 
-    var parts = [labelText(size), labelText(pack)];
+    var parts = [width + ' × ' + height.getAttribute('data-label') + '\u00a0м'];
     if (color) parts.push(color.nextElementSibling.textContent.trim().toLowerCase());
     specEl.textContent = parts.join(' / ');
+
+    var n = height.getAttribute('data-panels');
+    metaEl.textContent = n + '\u00a0' + (n === '4' ? 'панели' : 'панелей');
   }
 
   document.addEventListener('change', function (e) {
     var n = e.target.name;
-    if (n === 'size' || n === 'pack' || n === 'color' || n === 'calc-color') update();
+    if (n === 'kind' || n === 'height' || n === 'color' || n === 'calc-color') update();
   });
   update();
 })();

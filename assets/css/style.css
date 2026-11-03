@@ -417,38 +417,12 @@ table { border-collapse: collapse; }
 .offer__link svg { flex: none; color: var(--c-gold-deep); transition: transform 520ms var(--ease); }
 .offer__link:hover svg { transform: translateY(3px); }
 
-/* номер шага: 01 / Размер → 02 / Бронепакет → 03 / Цена */
-.step {
-  margin-bottom: var(--sp-text);
-  color: #7d5d2f; /* темнее золота: контраст 4,5:1 и на кремовом, и на бежевой полосе */
-  font-size: 15px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-/* три бронепакета крупными числами */
-.packs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: var(--sp-text-l);
-}
-.packs div { padding-top: 12px; border-top: 1px solid var(--c-gold); }
-.packs dt {
-  font-size: 44px;
-  line-height: .95;
-  font-weight: 700;
-  letter-spacing: -.03em;
-  font-variant-numeric: tabular-nums;
-}
-.packs dd { margin-top: 6px; color: #55524c; font-size: 14px; line-height: 1.35; }
-.packs dd b { display: block; color: var(--c-text); font-size: 15px; }
-
-/* ---------- 03. Цена: выбор размера и пакета ---------- */
+/* ---------- Цены: размер и цвет, итог ---------- */
 .calc {
   display: grid;
+  /* minmax(0, …): широкая таблица цен не должна растягивать колонку за экран телефона */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--sp-head) var(--sp-col);
-  margin-top: var(--sp-block);
 }
 .calc__title {
   font-size: 26px;
@@ -471,7 +445,6 @@ table { border-collapse: collapse; }
   text-transform: uppercase;
 }
 .pick__legend span { display: block; margin-top: 2px; font-weight: 400; letter-spacing: 0; text-transform: none; }
-.calc__col { display: grid; gap: var(--sp-head); align-content: start; min-width: 0; }
 .pick__group {
   clear: both;
   padding: 14px 0 2px;
@@ -496,6 +469,10 @@ table { border-collapse: collapse; }
   transition: color 320ms var(--ease);
 }
 .pick__label small { color: var(--c-muted); font-size: 14px; font-weight: 400; }
+/* пометка «частый выбор» ставит main.js по данным таблицы */
+.pick__tag { color: #7d5d2f; font-size: 12px; font-weight: 700; letter-spacing: .02em; }
+/* выбор «на окно / на балконную дверь» — текстовые переключатели */
+.kind { clear: both; display: flex; flex-wrap: wrap; gap: 0 24px; margin-bottom: 8px; }
 /* кружок: пустой — тонкое кольцо, выбранный — толстое золотое */
 .pick__label::before {
   content: "";
@@ -530,6 +507,7 @@ table { border-collapse: collapse; }
 }
 .calc__price.is-request { font-size: 28px; letter-spacing: -.02em; }
 .calc__spec { margin-top: 10px; color: var(--c-muted); font-size: 15px; }
+.calc__meta { margin-top: 2px; color: var(--c-muted); font-size: 15px; }
 .calc__btn { width: 100%; margin-top: 20px; }
 .calc__note { margin-top: 10px; color: var(--c-muted); font-size: 13px; text-align: center; }
 
@@ -582,19 +560,17 @@ table { border-collapse: collapse; }
 .rates__note { display: block; margin-top: 4px; color: var(--c-muted); font-size: 13px; font-weight: 400; }
 .rates tbody th { color: var(--c-muted); font-size: 15px; font-weight: 400; }
 .rates td { font-size: 17px; font-weight: 700; }
+/* панели и вес — справочные колонки, цены выделены жирным */
+.rates td.rates__meta { color: var(--c-muted); font-weight: 400; }
+/* самые распространённые варианты из прайса: золотая линия под ценой */
+.rates td[data-common] { border-bottom: 2px solid var(--c-gold); }
+.rates__legend { display: flex; align-items: center; gap: 10px; margin-top: var(--sp-text); color: var(--c-muted); font-size: 14px; }
+.rates__mark { flex: none; width: 24px; border-bottom: 2px solid var(--c-gold); }
 /* цены ещё нет — ячейка пустая, подпись ставит CSS */
 .rates td:empty::after { content: "по запросу"; color: var(--c-muted); font-size: 14px; font-weight: 400; }
 
-/* ---------- материал: фото панели в разрезе + фраза ---------- */
-.material {
-  display: grid;
-  gap: var(--sp-col);
-  margin-top: var(--sp-block);
-}
-
 /* полоса на всю ширину экрана цвета блока «Как заказать» — без лишней разметки:
    фон расширяется тенью, а clip-path обрезает её сверху и снизу */
-.material,
 .mount {
   padding-top: var(--sp-block);
   padding-bottom: var(--sp-block);
@@ -602,43 +578,6 @@ table { border-collapse: collapse; }
   box-shadow: 0 0 0 100vmax var(--c-band);
   -webkit-clip-path: inset(0 -100vmax);
   clip-path: inset(0 -100vmax);
-}
-/* белая подложка под нижней частью фото, верх фото выходит за неё */
-.material__photo {
-  position: relative;
-  justify-self: center;
-  width: 100%;
-  max-width: 280px;
-  padding: 0 24px 24px;
-}
-.material__photo::before {
-  content: "";
-  position: absolute;
-  left: 0; right: 0;
-  top: 22%; bottom: 0;
-  border-radius: 16px;
-  background: var(--c-surface);
-}
-.material__photo img { position: relative; }
-.material__main {
-  text-wrap: pretty;
-  font-size: 22px;
-  line-height: 1.4;
-  letter-spacing: -.01em;
-}
-.material__accent {
-  position: relative;
-  margin-top: var(--sp-text-l);
-  padding-left: 40px;
-  color: var(--c-muted);
-  font-size: 17px;
-}
-.material__accent::before {
-  content: "";
-  position: absolute;
-  left: 0; top: .75em;
-  width: 28px; height: 2px;
-  background: var(--c-gold);
 }
 
 /* ---------- как подобрать размер ---------- */
@@ -715,6 +654,16 @@ table { border-collapse: collapse; }
 .legend__mark--opening { background: #eaf0f5; border: 1px solid #aebfce; }
 .legend__mark--frame { border: 3px solid #7b8794; }
 
+/* ---------- Важно понимать: на втором месте, после первого экрана ---------- */
+.notice__inner {
+  display: grid;
+  gap: var(--sp-text-l);
+  padding-top: 18px;
+  border-top: 1px solid var(--c-rule);
+}
+.notice__title { font-size: 26px; line-height: 1.15; font-weight: 700; letter-spacing: -.02em; }
+.notice__text { max-width: 34em; font-size: 20px; line-height: 1.45; letter-spacing: -.01em; text-wrap: pretty; }
+
 /* ---------- две заметки: линия сверху вместо плашки ---------- */
 .notes {
   display: grid;
@@ -730,11 +679,12 @@ table { border-collapse: collapse; }
 .note__title { font-size: 17px; font-weight: 700; line-height: 1.3; }
 .note p { margin-top: var(--sp-list); color: var(--c-muted); font-size: 15px; line-height: 1.5; }
 
-/* ---------- 02. Внешний вид ---------- */
+/* ---------- Установка: как выглядит штора ---------- */
 .states {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--sp-col);
+  margin-top: var(--sp-block);
 }
 .state__media {
   display: flex;
@@ -771,7 +721,6 @@ table { border-collapse: collapse; }
 .mount {
   display: grid;
   gap: var(--sp-col);
-  margin-top: var(--sp-block);
 }
 .mount__title {
   font-size: 26px;
@@ -782,8 +731,39 @@ table { border-collapse: collapse; }
 .mount__lead { margin-top: var(--sp-text); font-size: 18px; line-height: 1.45; text-wrap: pretty; }
 .mount__photos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .mount__photos img { width: 100%; border-radius: 6px; }
+/* шаги подвеса */
+.steps { counter-reset: st; margin: var(--sp-text-l) 0 0; padding: 0; list-style: none; }
+.steps li {
+  counter-increment: st;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid var(--c-gold);
+  font-size: 16px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.steps li:last-child { border-bottom: 1px solid var(--c-gold); }
+.steps li::before {
+  content: counter(st, decimal-leading-zero);
+  color: #7d5d2f;
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
 
-/* ---------- 03. Испытания ---------- */
+/* ---------- Заказ и оплата, доставка ---------- */
+.logistics { display: grid; gap: var(--sp-head) var(--sp-col); }
+.facts div { display: grid; gap: 4px; padding: 14px 0; border-top: 1px solid var(--c-rule); }
+.facts div:last-child { border-bottom: 1px solid var(--c-rule); }
+.facts dt { color: var(--c-muted); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.facts dd { font-size: 18px; line-height: 1.45; text-wrap: pretty; }
+.delivery { padding-top: var(--sp-text-l); border-top: 2px solid var(--c-gold); }
+.delivery__title { font-size: 26px; line-height: 1.15; font-weight: 700; letter-spacing: -.02em; }
+.delivery p { margin-top: var(--sp-text); color: var(--c-muted); font-size: 18px; line-height: 1.45; text-wrap: pretty; }
+
+/* ---------- Испытания ---------- */
 .trials {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -794,6 +774,10 @@ table { border-collapse: collapse; }
   border-radius: 6px;
   background: #efe7dc;
 }
+/* места под фото протокола испытаний — формата листа */
+.trial__photo--doc { aspect-ratio: 3 / 4; }
+.protocol { margin-top: var(--sp-block); }
+.protocol__title { margin-bottom: var(--sp-text-l); font-size: 22px; line-height: 1.2; font-weight: 700; letter-spacing: -.02em; }
 
 
 /* ---------- 04. Заказать (по макету) ---------- */
@@ -826,6 +810,39 @@ table { border-collapse: collapse; }
   font-size: 17px;
   line-height: 1.55;
 }
+/* три шага перед кнопками */
+.order__steps {
+  counter-reset: os;
+  display: grid;
+  gap: 12px;
+  max-width: 760px;
+  margin: 28px auto 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+.order__steps li {
+  counter-increment: os;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  padding-top: 12px;
+  border-top: 1px solid var(--c-gold);
+  color: #222220;
+  font-size: 17px;
+  line-height: 1.4;
+  text-wrap: pretty;
+  align-content: start;
+}
+.order__steps li::before {
+  content: counter(os, decimal-leading-zero);
+  color: #7d5d2f;
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.order__steps + .order__lead { max-width: 30em; margin-top: 28px; }
+.order__num { margin-top: 20px; color: #66655f; font-size: 14px; }
+.order__num a { color: #3b3830; font-weight: 700; white-space: nowrap; }
 .order__actions {
   display: grid;
   gap: 10px;
@@ -871,6 +888,7 @@ table { border-collapse: collapse; }
   font-style: normal;
   justify-items: start;
 }
+.footer__list span { color: var(--c-muted); }
 .footer__bottom {
   display: grid;
   gap: var(--sp-list);
@@ -902,7 +920,11 @@ table { border-collapse: collapse; }
 /* таблица цен на телефоне: одинаковые заголовки в две строки, на всю ширину */
 @media (max-width: 767.98px) {
   .tone { margin-bottom: 32px; }
-  .packs dd b { font-size: 14px; }
+  .rates th, .rates td { padding-right: 8px; }
+  .rates td { font-size: 15px; }
+  .rates thead th { font-size: 12px; white-space: normal; }
+  .rates thead th:first-child { font-size: 11px; letter-spacing: .04em; }
+  .rates__note { font-size: 11px; }
   .s-floor { display: none; }
   .mount__title,
   .fit__title { font-size: 22px; }
@@ -946,14 +968,8 @@ table { border-collapse: collapse; }
   .tone__legend { width: auto; margin-right: 4px; }
   .rates td { font-size: 19px; }
 
-  /* фото справа от текста */
-  .material { grid-template-columns: 1fr 260px; align-items: center; }
-  .material__photo { order: 2; max-width: none; }
-  .material__main { font-size: 26px; }
-  .packs dt { font-size: 56px; }
-
-  /* размер и пакет рядом, итог под ними */
-  .calc { grid-template-columns: 1fr 1fr; }
+  /* размер и цвет рядом, итог под ними */
+  .calc { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .calc__head, .calc__result, .calc__all { grid-column: 1 / -1; }
   .calc__result {
     display: grid;
@@ -961,12 +977,12 @@ table { border-collapse: collapse; }
     column-gap: var(--sp-col);
     align-items: center;
   }
-  .calc__label, .calc__price, .calc__spec { grid-column: 1; }
-  .calc__btn { grid-column: 2; grid-row: 1 / 4; width: auto; margin-top: 0; }
+  .calc__label, .calc__price, .calc__spec, .calc__meta { grid-column: 1; }
+  .calc__btn { grid-column: 2; grid-row: 1 / 5; width: auto; margin-top: 0; }
   .calc__note { grid-column: 2; text-align: center; }
   .calc__title { font-size: 32px; }
 
-  .notes { grid-template-columns: repeat(3, 1fr); gap: var(--sp-col); }
+  .notes { grid-template-columns: repeat(2, 1fr); gap: var(--sp-col); }
   .note__title { font-size: 19px; }
   .note p { margin-top: var(--sp-text); font-size: 17px; }
 
@@ -974,6 +990,11 @@ table { border-collapse: collapse; }
   .principle p { font-size: 22px; }
 
   .trials { grid-template-columns: repeat(4, 1fr); }
+  .notice__title { font-size: 32px; }
+  .notice__text { font-size: 22px; }
+  .logistics { grid-template-columns: 1fr 1fr; align-items: start; }
+  .order__steps { grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 900px; }
+  .order__steps li { grid-template-columns: minmax(0, 1fr); gap: 10px; font-size: 18px; }
 
   .order__title { font-size: 48px; }
   .order__actions {
@@ -1139,10 +1160,8 @@ table { border-collapse: collapse; }
   .offer__desc { max-width: 22em; font-size: 26px; line-height: 1.35; letter-spacing: -.015em; }
   .offer__sub { font-size: 19px; }
 
-  .packs dt { font-size: 64px; }
-
-  /* цена: размер / пакет / итог в три колонки, таблица под ними */
-  .calc { grid-template-columns: 4fr 3fr 5fr; }
+  /* цена: размер / цвет / итог в три колонки, таблица под ними */
+  .calc { grid-template-columns: minmax(0, 4fr) minmax(0, 3fr) minmax(0, 5fr); }
   .calc__head { grid-column: 1 / -1; }
   .calc__title { font-size: 36px; }
   .calc__result { grid-column: auto; display: block; padding: 32px; }
@@ -1154,11 +1173,6 @@ table { border-collapse: collapse; }
   .rates thead th { font-size: 17px; }
   .rates tbody th { font-size: 17px; }
   .rates td { font-size: 22px; }
-
-  .material { grid-template-columns: 8fr 4fr; gap: var(--sp-col); }
-  .material__photo { width: 100%; max-width: 420px; justify-self: center; padding: 0 40px 40px; }
-  .material__main { font-size: 32px; line-height: 1.3; letter-spacing: -.02em; }
-  .material__accent { font-size: 19px; }
 
   .fit { grid-template-columns: 5fr 7fr; align-items: center; }
   .fit__scheme { width: 100%; max-width: 480px; justify-self: center; }
@@ -1178,6 +1192,13 @@ table { border-collapse: collapse; }
   .mount__lead { font-size: 20px; }
 
   .trials { gap: var(--sp-col) 20px; }
+
+  .notice__inner { grid-template-columns: 4fr 8fr; align-items: start; }
+  .notice__title { font-size: 36px; }
+  .notice__text { font-size: 26px; line-height: 1.35; letter-spacing: -.015em; }
+  .logistics { grid-template-columns: 7fr 5fr; }
+  .delivery__title { font-size: 36px; }
+  .steps li { font-size: 17px; }
 
 }
 

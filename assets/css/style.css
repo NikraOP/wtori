@@ -401,6 +401,8 @@ table { border-collapse: collapse; }
 }
 .shot img { width: 100%; border-radius: 6px; }
 .shot figcaption { margin-top: 6px; color: var(--c-muted); font-size: 14px; }
+.offer__details { display: grid; grid-template-columns: repeat(2, minmax(0, 150px)); gap: 12px; margin-top: 12px; }
+.offer__details img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; }
 .offer__link {
   display: flex;
   width: fit-content;
@@ -762,6 +764,7 @@ table { border-collapse: collapse; }
 .delivery { padding-top: var(--sp-text-l); border-top: 2px solid var(--c-gold); }
 .delivery__title { font-size: 26px; line-height: 1.15; font-weight: 700; letter-spacing: -.02em; }
 .delivery p { margin-top: var(--sp-text); color: var(--c-muted); font-size: 18px; line-height: 1.45; text-wrap: pretty; }
+.delivery__photo { display: block; width: 100%; max-width: 420px; height: auto; margin-top: var(--sp-text-l); border-radius: 6px; }
 
 /* ---------- Испытания ---------- */
 .trials {
